@@ -1,2 +1,7 @@
 Flask
 flask-cors
+nltk
+scikit-learn
+gensim
+numpy
+tqdm

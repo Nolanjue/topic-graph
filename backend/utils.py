@@ -1,9 +1,22 @@
 import io
 import re
 import PyPDF2# to parse the input pdf
+
+from flask import Flask, request, jsonify
+from flask_cors import CORS
+import random 
+from sklearn.feature_extraction.text import TfidfVectorizer #vectorizer for all chunks
+from sklearn.metrics.pairwise import cosine_similarity #to store our weights!
+from sklearn.metrics.pairwise import cosine_similarity
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.decomposition import LatentDirichletAllocation
+import numpy as np
+import nltk
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
-STOPWORDS = set(stopwords.words("english"))
+
+#i fucking hate stopwords
+#STOPWORDS = set(stopwords.words("english"))
 def extract_text_from_pdf(file):
     reader = PyPDF2.PdfReader(file)
     text = ""
@@ -28,7 +41,7 @@ def chunk_text(text, chunk_size=300):
     processed_chunks = []
     for chunk in chunks:
         tokens = word_tokenize(chunk.lower())
-        tokens = [t for t in tokens if t.isalpha() and t not in STOPWORDS]
+        tokens = [t for t in tokens if t.isalpha()]# and t not in STOPWORDS
         processed_chunks.append(" ".join(tokens))  # back to string for vectorizer
 
     return chunks, processed_chunks

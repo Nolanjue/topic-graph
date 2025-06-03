@@ -4,12 +4,19 @@ import random
 from utils import chunk_text, extract_text_from_pdf 
 from sklearn.feature_extraction.text import TfidfVectorizer #vectorizer for all chunks
 from sklearn.metrics.pairwise import cosine_similarity #to store our weights!
-from gensim import corpora, models #to import LDA to get our topics
 from sklearn.metrics.pairwise import cosine_similarity
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.decomposition import LatentDirichletAllocation
+from utils import chunk_text, extract_text_from_pdf
 import numpy as np
 import nltk
-nltk.download("punkt")
-nltk.download("stopwords")
+
+chunks = ["Water market mechanisms are approaches that treat water as a commodity and that can be used to transfer water among users, reallocating water-using price.1 Because they are voluntary and have the potential to move water efficiently, water market mechanisms are viewed in policy discussions as one possible approach for more effectively managing water resources. This is the topic of our research.",
+        "Organic farming has been one of the fastest growing markets in agriculture during the last twenty years. It combines both tradition and science to produce crops and livestock that flourish in the absence of synthetic pesticides, herbicides, and hormones. However, many environmental scientists view the term 'organic' as a form of greenwashing and unsubstantive bias.",
+        "In an especially prescient piece about the future course of the public health challenge, CSIS’s J. Stephen Morrison and Anna Carroll observed, Pandemics change history by transforming populations, states, societies, economies, norms, and governing structures. For example, the Black Death killed roughly a ton of  adults in Europe, resulting in rising wages and rights for the peasant class.",
+        "The virus infected the human population at a historic transition in its demographic structure. This year, for the first time ever, the number of people aged 60 years or older outnumbers people 5 years old or younger worldwide, with aging populations concentrated most heavily in high-income countries. Unfortunately, the virus is uniquely dangerous to this growing elderly cohort.",
+        "The areas utilized are variable in size and location, but each is chosen so that the local rainfall may be reinforced by the overflow of water derived from higher ground. The selection of a field involves an intimate knowledge of local conditions. The field must be flooded, but the sheet of water must not attain such velocity as to wash out the crop, nor bury the plants in detritus."
+]
 
 app = Flask(__name__)
 CORS(app)  # Allow cross-origin requests
@@ -18,8 +25,27 @@ CORS(app)  # Allow cross-origin requests
 def generate_random_color():
     return "#" + ''.join(random.choices('0123456789ABCDEF', k=6))
 
-vectorizer = TfidfVectorizer()
+vectorizer = CountVectorizer(stop_words='english')  #TfidfVectorizer()
+X = vectorizer.fit_transform(chunks)
 
+lda = LatentDirichletAllocation(n_components=4, random_state=42) #choose top 4 groups (3 topics per group)
+lda.fit(X)
+
+topic_keywords = []
+for topic_weights in lda.components_:
+    top_keywords = [vectorizer.get_feature_names_out()[i] for i in topic_weights.argsort()[-5:]]
+    topic_keywords.append(top_keywords)
+
+print(topic_keywords)
+
+chunk_topics = lda.transform(X) #gives probabilities for each chunk over topics
+
+assigned_topics = chunk_topics.argmax(axis=1)
+
+print(assigned_topics)
+print(chunk_topics)
+
+'''
 @app.route("/submit", methods=["POST"])
 def receive_data():
     data = request.get_json()
@@ -33,8 +59,8 @@ def receive_data():
 
     if not similarity_matrix:
 
-    tfidf_matrix = vectorizer.fit_transform(chunks)
-    sim_matrix = cosine_similarity(tfidf_matrix)
+    #tfidf_matrix = vectorizer.fit_transform(chunks)
+    #sim_matrix = cosine_similarity(tfidf_matrix)
 
     #  dictionary = corpora.Dictionary(tokenized_chunks)
     # corpus = [dictionary.doc2bow(text) for text in tokenized_chunks]
@@ -80,3 +106,4 @@ def calculate_new_matrix():
 
 
 def calculate_topics():
+'''

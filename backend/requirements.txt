@@ -1,7 +1,8 @@
-Flask
+flask
 flask-cors
 nltk
 scikit-learn
 gensim
 numpy
 tqdm
+faiss-cpu

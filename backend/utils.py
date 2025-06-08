@@ -3,7 +3,13 @@ import re
 import PyPDF2# to parse the input pdf
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
+import nltk
+
+nltk.download("punkt")
+nltk.download("stopwords")
 STOPWORDS = set(stopwords.words("english"))
+
+
 def extract_text_from_pdf(file):
     reader = PyPDF2.PdfReader(file)
     text = ""

@@ -15,25 +15,32 @@ import nltk
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
 
-#i fucking hate stopwords
-#STOPWORDS = set(stopwords.words("english"))
+nltk.download('punkt')
+nltk.download('stopwords')
+
 def extract_text_from_pdf(file):
+    maxnumpages = 100
     reader = PyPDF2.PdfReader(file)
     text = ""
+    pagecount = 0
     for page in reader.pages:
         text += page.extract_text() or ""
+        pagecount = pagecount + 1
+        if(pagecount > maxnumpages):
+            break
     return text
-
 
 def chunk_text(text, chunk_size=300):
     sentences = re.split(r'(?<=[.!?])\s+', text)
     chunks, current = [], ""
+
     for sentence in sentences:
-        if len(current) + len(sentence) < chunk_size:
-            current += " " + sentence
+        filtered_sentence = remove_stop_words(sentence)
+        if len(current) + len(filtered_sentence) < chunk_size:
+            current += " " + filtered_sentence
         else:
             chunks.append(current.strip())
-            current = sentence
+            current = filtered_sentence
     if current:
         chunks.append(current.strip())
 
@@ -45,3 +52,13 @@ def chunk_text(text, chunk_size=300):
         processed_chunks.append(" ".join(tokens))  # back to string for vectorizer
 
     return chunks, processed_chunks
+
+def remove_stop_words(text):
+    words = text.split()
+    STOPWORDS = set(nltk.stopwords("english"))
+    filtered_words = [word for word in words if word.lower() not in STOPWORDS]
+
+    filtered_text = ' '.join(filtered_words)
+
+    return filtered_text
+    

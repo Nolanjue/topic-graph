@@ -11,6 +11,8 @@ from utils import chunk_text, extract_text_from_pdf
 import numpy as np
 import nltk
 
+
+
 chunks = ["Water market mechanisms are approaches that treat water as a commodity and that can be used to transfer water among users, reallocating water-using price.1 Because they are voluntary and have the potential to move water efficiently, water market mechanisms are viewed in policy discussions as one possible approach for more effectively managing water resources. This is the topic of our research.",
         "Organic farming has been one of the fastest growing markets in agriculture during the last twenty years. It combines both tradition and science to produce crops and livestock that flourish in the absence of synthetic pesticides, herbicides, and hormones. However, many environmental scientists view the term 'organic' as a form of greenwashing and unsubstantive bias.",
         "In an especially prescient piece about the future course of the public health challenge, CSIS’s J. Stephen Morrison and Anna Carroll observed, Pandemics change history by transforming populations, states, societies, economies, norms, and governing structures. For example, the Black Death killed roughly a ton of  adults in Europe, resulting in rising wages and rights for the peasant class.",

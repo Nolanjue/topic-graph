@@ -28,6 +28,8 @@ const elements = [
 
 const layout = { name: "preset" };
 
+//BACKEND: when we add to styles, we need to change it so we add an map with
+//for new topuc: do node[parent= "or index"]
 const style = [
   {
     selector: 'node[parent = "cluster1"]:child', // Only child nodes with clusterType tech

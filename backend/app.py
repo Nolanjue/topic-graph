@@ -33,11 +33,9 @@ def receive_data():
     data = request.get_json()
     #all the code here for the request we send
     pdf = request.files.get('pdf')
+
     styles = data.get("styles", [])#append new styles for the clusters with random colors here(clusters = topic)
     elements = data.get("elements", [])#all nodes, add topics and nodes here, so each node must have a topic inside of it()
-    
-
-
     topics = data.get("topics", [])#all unique topics(append with LDA) for nodes
     similarity_list = data.get("similarities", [])
     #should be a list of all similaritry data we should maintain as easy access
@@ -158,6 +156,7 @@ def calculate_topics(chunks: list[str], seed_word_lists: list[list[str]]):
 
     existing_topic_count = len(seed_word_lists)
     max_extra_topics = 5
+    #we can handle merging of topics later. 
     n_topics = existing_topic_count + max_extra_topics
 
     # Vectorize input text chunks

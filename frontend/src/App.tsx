@@ -14,12 +14,16 @@ const elements = [
   { data: { id: "cluster1", label: "Eyes", } },
 
   // Children nodes in cluster1 with randomized positions
+
+  
   { data: { id: "a", label: "Node A", parent: "cluster1" }, position: getRandomPosition() },
   { data: { id: "b", label: "Node B", parent: "cluster1" }, position: getRandomPosition() },
   
   // Node outside any cluster with randomized position
   { data: { id: "c", label: "Node C" }, position: getRandomPosition() },
 
+
+  //anything below this point will be updated in similatry function for frontend
   // Edges with larger labels
   { data: { id: "ab", source: "a", target: "b", label: "0.85" } },
   { data: { id: "ac", source: "a", target: "c", label: "0.72" } },

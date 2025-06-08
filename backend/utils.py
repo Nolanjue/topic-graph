@@ -33,6 +33,7 @@ def chunk_text(text, chunk_size=300):
     words = filtered_text.split()
     chunks, current = [], ""
 
+
     wordcount = 0
     for word in words:
         if(wordcount < chunk_size):

@@ -1,0 +1,12 @@
+we use cosine similaritry matrix and then create edges based on result of the matrix(we can calculate this)
+each chunk should already have a topic
+
+
+for the whole text we should 
+FOR LDA: we should map each chunk to a separate topic
+
+LDA go through the entire text ->generate topics, we will choose the top 3-4 topics
+
+after we generate topics, we add it to topic array(from previous iterations of LDA)
+
+We will try to force it. to only generates probabilities for chunks with those topics
